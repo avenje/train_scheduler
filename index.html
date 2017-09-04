@@ -19,8 +19,10 @@
     <div class="container">
       <!-- Jumbotron -->
       <div class="jumbotron" style="background-color: black; color: white">
-        <h1 class="text-center">Eurorail Schedule</h1>
-        <h3 class="text-center">1 September 2017 - Northern Italy rail destinations</h3>
+        <h1 class="text-center">Train Schedule</h1>
+        <h3 class="text-center">Anywhere, Anystate, USA</h3>
+        <hr>
+        <h2 id="currentTime" class="text-center"></h2>
       </div>
       <div class="row">
         <div class="col-lg-12">
@@ -38,8 +40,7 @@
                     <th>Frequency (min)</th>
                     <th>Next Arrival</th>
                     <th>Minutes Away</th>
-<!--                     <th>Total Billed ($)</th>
- -->                  </tr>
+                 </tr>
                 </thead>
                 <tbody>
                 </tbody>
@@ -56,19 +57,19 @@
               <form>
                 <div class="form-group">
                   <label for="train-name-input">Train Name</label>
-                  <input class="form-control" id="train-name-input" type="text" placeholder="placeTrain" pattern="[A-Za-z]{3}"
+                  <input class="form-control" id="train-name-input" type="text" placeholder="Train Name" pattern="[A-Za-z]{}"
                 </div>
                 <div class="form-group">
                   <label for="destination-input">Destination</label>
-                  <input class="form-control" id="destination-input" type="text" pattern="[A-Za-z]{3}">
+                  <input class="form-control" id="destination-input" type="text" placeholder="Destination" pattern="[A-Za-z]{}">
                 </div>
                 <div class="form-group">
                   <label for="start-input">Start Train (HH:mm - military time)</label>
-                  <input class="form-control" id="start-input" type="text" pattern="[A-Za-z]{3}">
+                  <input class="form-control timeEntered" id="start-input" type="text" placeholder="HH:mm format only.  ex: 12:34" pattern="[01]?[0-9]|2[0-3]):[0-5][0-9]">
                 </div>
                 <div class="form-group">
                   <label for="rate-input">Frequency (min)</label>
-                  <input class="form-control" id="rate-input" type="text" pattern="[A-Za-z]{3}">
+                  <input class="form-control" id="rate-input" type="text" placeholder="Minutes only" pattern="[/^\d+$/]{}">
                 </div>
                 <button class="btn btn-primary" id="add-train-btn" type="submit">Submit</button>
               </form>
