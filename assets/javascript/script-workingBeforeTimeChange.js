@@ -17,7 +17,7 @@ $("#add-train-btn").on("click", function(event) {
   // Grabs user input
   var trainName = $("#train-name-input").val().trim();
   var dest = $("#destination-input").val().trim();
-  var trainStart = $("#start-input").val().trim();
+  var trainStart = moment($("#start-input").val().trim(), "HH:mm").format("X");
   var trainRate = $("#rate-input").val().trim();
   // Creates local "temporary" object for holding train data
   var newTrain = {
@@ -26,6 +26,8 @@ $("#add-train-btn").on("click", function(event) {
     start: trainStart,
     rate: trainRate
   };
+
+  // if (trainName != numbers) do alert message
 
   // Uploads train data to the database
   database.ref().push(newTrain);
@@ -42,39 +44,36 @@ $("#add-train-btn").on("click", function(event) {
   $("#start-input").val("");
   $("#rate-input").val("");
 });
-
 // 3. Create Firebase event for adding train to the database and a row in the html when a user adds an entry
 database.ref().on("child_added", function(childSnapshot, prevChildKey) {
-
+  console.log(childSnapshot.val());
   // Store everything into a variable.
   var trainName = childSnapshot.val().name;
   var dest = childSnapshot.val().destination;
-  // var trainStart = childSnapshot.val().start;
+  var trainStart = childSnapshot.val().start;
   var trainRate = childSnapshot.val().rate;
-  // var tRate= childSnapshot.val().rate;
-    // find when the next train is and minutes until next train
-  var tRate = childSnapshot.val().frequency;
-  // pushed back 1 year to make sure it comes before current time
-  var convertedDate = moment(childSnapshot.val().trainName, 'hh:mm');
-  var trainTime = moment(convertedDate).format('HH:mm');
-  var currentTime = moment();
-  // pushed back 1 year to make sure it comes before current time
-  var firstTimeConverted = moment(trainTime,'hh:mm');
-  var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-  var tRemainder = diffTime % tRate;
-  //solved
-  var tMinutesTillTrain = tRate - tRemainder;
-  //solved
-  var nextTrain = moment().add(tMinutesTillTrain, 'minutes').format('HH:mm')
-
-  
+  // train Info
+  console.log(trainName," - train name");
+  console.log(dest, " - destination");
+  console.log(trainStart, " - start time-min");
+  console.log(trainRate, " - frequency-HH:mm");
+  // Prettify the train start
+  var trainStartPretty = moment.unix(trainStart).format("HH:mm");
+  // Calculate the months worked using hardcore math
+  // To calculate the months worked
+  var trainMins = moment().diff(moment.unix(trainStart, "X"), "minutes");
+  console.log(trainMins, " - train mins");
+  // Calculate the total billed rate
+  // var empBilled = trainMins * trainRate;
+  // console.log(empBilled);
+  // Add each train's data into the table
   $("#train-table > tbody").append("<tr><td>" + trainName + "</td><td>" + dest + "</td><td>" +
-   trainRate + "</td><td>" + nextTrain + "</td><td>" + tMinutesTillTrain + "</td><td>");
- },function(errorObject) {
-    console.log('Errors handled: ' + errorObject.code);
-  })
-
-//refreashes train data every minute
-setInterval(function(){
-    location.reload();
-  }, 60000)
+   trainRate + "</td><td>" + trainStartPretty + "</td><td>" + trainMins + "</td><td>");
+   // + empBilled + "</td></tr>");
+ });
+// Example Time Math
+// -----------------------------------------------------------------------------
+// Assume train start date of January 1, 2015
+// Assume current date is March 1, 2016
+// We know that this is 15 months.
+// Now we will create code in moment.js to confirm that any attempt we use mets this test case
